@@ -1,0 +1,29 @@
+name: Deploy with Proxy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup proxy
+        uses: actions/setup-proxy@v1
+        with:
+          http-proxy: ${{ secrets.HTTP_PROXY }}
+          https-proxy: ${{ secrets.HTTPS_PROXY }}
+
+      - name: Install dependencies
+        run: |
+          # 安裝 Flask 同 youtube-transcript-api
+          pip install Flask youtube-transcript-api
+
+      - name: Run script with proxy
+        run: |
+          # 執行你嘅 Python 腳本
+          python main.py
